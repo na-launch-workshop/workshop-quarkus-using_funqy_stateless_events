@@ -1,0 +1,50 @@
+####
+# This Dockerfile is used to build a container that runs the Quarkus application in JVM mode
+#
+# Usage:
+#   mvn clean package -DskipTests
+#   docker build -f src/main/docker/Dockerfile.jvm -t quarkus/app-jvm .
+#   docker run -i --rm -p 8080:8080 quarkus/app-jvm
+####
+
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.7
+
+# Arguments
+ARG JAVA_PACKAGE=java-17-openjdk-headless
+ARG RUN_JAVA_VERSION=1.3.8
+
+# Environment
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' \
+    JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager" \
+    AB_JOLOKIA_OFF="true" \
+    AB_PROMETHEUS_OFF="true"
+
+# Install Java & dependencies, prepare /deployments
+RUN microdnf install -y openssl curl ca-certificates ${JAVA_PACKAGE} \
+    && microdnf update -y \
+    && microdnf clean all \
+    && mkdir /deployments \
+    && chown 1001:root /deployments \
+    && chmod g+rwX /deployments \
+    # Fetch run-java.sh
+    && curl -sSL https://repo1.maven.org/maven2/io/fabric8/run-java-sh/${RUN_JAVA_VERSION}/run-java-sh-${RUN_JAVA_VERSION}-sh.sh \
+        -o /deployments/run-java.sh \
+    && chmod 755 /deployments/run-java.sh \
+    && chown 1001:root /deployments/run-java.sh \
+    # Improve startup entropy
+    && echo "securerandom.source=file:/dev/urandom" >> /etc/alternatives/jre/lib/security/java.security
+
+# Copy Quarkus app
+COPY target/quarkus-app/lib/ /deployments/lib/
+COPY target/quarkus-app/*.jar /deployments/
+COPY target/quarkus-app/app/ /deployments/app/
+COPY target/quarkus-app/quarkus/ /deployments/quarkus/
+
+# Networking
+EXPOSE 8080
+
+# Run as non-root (OpenShift will randomize UID but stay in root group)
+USER 1001
+
+# Entrypoint
+ENTRYPOINT [ "/deployments/run-java.sh" ]

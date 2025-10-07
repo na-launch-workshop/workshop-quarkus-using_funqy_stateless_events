@@ -1,0 +1,78 @@
+schemaVersion: 2.2.2
+metadata:
+  name: workshop-module4-java
+  version: 1.0.0
+  description: DevSpaces workspace for Quarkus app
+attributes:
+  che-editor: vscode
+components:
+  - name: tools
+    container:
+      image: image-registry.openshift-image-registry.svc:5000/openshift/udi-rhel9:latest
+      env:
+        - name: QUARKUS_HTTP_HOST
+          value: 0.0.0.0
+      endpoints:
+        - exposure: none
+          name: debug
+          protocol: tcp
+          targetPort: 5005
+        - exposure: public
+          name: funqy-service
+          protocol: http
+          targetPort: 8081
+      volumeMounts:
+        - name: m2
+          path: /home/user/.m2
+      cpuLimit: '4'
+      cpuRequest: '1'
+      memoryLimit: '8G'
+      memoryRequest: '4G'
+      mountSources: true
+  - name: m2
+    volume:
+      size: 1G
+commands:
+  - id: build-and-deploy-to-openshift
+    exec:
+      label: "1. Build and deploy To Openshift using deploy.sh"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: source ./deploy.sh
+      group:
+        kind: run
+        isDefault: true
+  - id: send-dummy-data
+    exec:
+      label: "2. Send sample Data To your Serverless Cloud Event Listener!"
+      component: tools
+      commandLine: |
+        oc exec -it curler -- curl -v \
+          http://broker-ingress.knative-eventing.svc.cluster.local/$(oc project -q)/default \
+          -H "Ce-Id: txn-001" \
+          -H "Ce-Specversion: 1.0" \
+          -H "Ce-Type: defaultChain" \
+          -H "Ce-Source: devfile" \
+          -H "Content-Type: application/json" \
+          -d '{"transactionId":"txn-001","customerId":"12345","amount":2500,"currency":"USD"}'
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+  - id: check-logs-on-knative-service
+    exec:
+      label: "3. Check logs on the Knative service"
+      component: tools
+      commandLine: >
+        oc logs -l serving.knative.dev/service=funqy-knative-events-quickstart -f
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: build
+  - id: open-kafka-ui
+    exec:
+      label: "4. Open Kafka UI tool (copy link below)"
+      component: tools
+      commandLine: >
+        echo "👉 Open this in your browser: https://kafka-ui-workshop-kafka.apps.<cluster-domain>"
+      workingDir: ${PROJECT_SOURCE}
+      group:
+        kind: run

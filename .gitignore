@@ -1,0 +1,54 @@
+# Maven / Gradle build outputs
+/target/
+/build/
+/out/
+
+# Quarkus specific
+.quarkus/
+.quarkus-cache/
+.quarkus-dev/
+/quarkus-app/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment / credentials
+.env
+.env.*
+!.env.example
+
+# Dependency directories
+/node_modules/
+/dist/
+/lib/
+
+# Test reports
+/surefire-reports/
+/failsafe-reports/
+/jacoco.exec
+
+# Temporary files
+*.tmp
+*.bak
+*.~*
+
+# Docker / Podman
+*.pid
+*.tar
+*.gz
+docker-compose.override.yml
+
+build.log
