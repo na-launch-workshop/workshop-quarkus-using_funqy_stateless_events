@@ -35,7 +35,7 @@ Our current system has a workflow engine, it is stateful. We want to move it to 
 
 ## 🔄 Transaction Flow Breakdown
 
-### **1. 🔹 Validate Customer** (validateTransaction)
+### **1. 🔹 Validate Customer (validateTransaction)**
 - Triggered by an external Knative CloudEvent (`defaultChain`), e.g., from a curl call.
 - Mocks a call to a Customer Profile Service (verifies customer account is active).
 - Marks transaction as **VALIDATED**.
@@ -108,7 +108,7 @@ oc exec -it curler -n "$NS" -- curl -v \
 
 ---
 
-### **4. 🔸 Settlement & Kafka Publish** (settleTransaction)
+### **4. 🔸 Settlement & Kafka Publish (settleTransaction)**
 - Triggered by `settleTransaction` function.
 - Mocks:
   - Ledger Service (recording transaction).
