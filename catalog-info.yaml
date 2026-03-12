@@ -8,7 +8,10 @@ metadata:
   annotations:
     backstage.io/techdocs-ref: dir:.
   tags:
+    - knative
     - serverless
+    - kafka
+    - quarkus
 spec:
   type: module
   lifecycle: production

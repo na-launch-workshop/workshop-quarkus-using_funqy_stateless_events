@@ -2,7 +2,6 @@
 
 **Technology Stack:**
 
-- Quarkus
 - Knative Eventing
 - Red Hat Serverless
 - Quarkus Funqy
