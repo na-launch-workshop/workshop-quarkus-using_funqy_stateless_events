@@ -1,6 +1,6 @@
 schemaVersion: 2.2.2
 metadata:
-  name: workshop-module4-java
+  name: workshop-quarkus-using_funqy_stateless_events
   version: 1.0.0
   description: DevSpaces workspace for Quarkus app
 attributes:
@@ -25,9 +25,9 @@ components:
         - name: m2
           path: /home/user/.m2
       cpuLimit: '4'
-      cpuRequest: '1'
-      memoryLimit: '8G'
-      memoryRequest: '4G'
+      cpuRequest: '500m'
+      memoryLimit: '6Gi'
+      memoryRequest: '2Gi'
       mountSources: true
   - name: m2
     volume:

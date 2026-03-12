@@ -1,11 +1,11 @@
-# 🚀 Module 4: Creating and Deploying Your First Serverless Function
+# 🚀 **Module: Creating and Deploying Your First Serverless Function**
 
-Technology Stack: 
+**Technology Stack:**
 
 - Quarkus
-- K-Native Eventing
+- Knative Eventing
 - Red Hat Serverless
-- Quarkus FUNQY
+- Quarkus Funqy
 - Kafka
 
 ---
@@ -27,9 +27,9 @@ Our current system has a workflow engine, it is stateful. We want to move it to 
 
 ## 🧩 **Challenge**
 
-- Write your own FUNQY event
+- Write your own Funqy event
 - Annotate it in the correct part of your workflow
-- Wire it up to a K-Native event
+- Wire it up to a Knative event
 - Verify the result in Kafka
 
 ---
@@ -133,6 +133,6 @@ oc exec -it curler -n "$NS" -- curl -v \
 
 ## ✅ Key Takeaways
 
-- You have created a FUNQY Event in Quarkus
-- You created a K-Native Event that can respond to triggers and trigger itself
+- You have created a Funqy Event in Quarkus
+- You created a Knative Event that can respond to triggers and trigger itself
 - See how quickly Quarkus can build Serverless Events

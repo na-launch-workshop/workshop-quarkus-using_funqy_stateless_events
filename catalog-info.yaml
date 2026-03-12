@@ -1,8 +1,8 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: workshop-module4-java
-  title: Module 4 - Java
+  name: workshop-quarkus-using_funqy_stateless_events
+  title: Creating and Deploying a Serverless Function
   description: |
     Creating and Deploying your first Serverless Function
   annotations:
